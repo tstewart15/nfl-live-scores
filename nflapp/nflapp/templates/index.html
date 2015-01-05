@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+     
+     
+{% block title %}Week {{weekNum}}{% endblock %}
+ 
+{% block content %}
+    <h1>Week {{weekNum}}</h1>
+    {% for game in games %}
+    <a class="game" href="/game/{{game.gsis_id}}">
+        <div class="top away">{{game.away_team}}<br />{{game.away_score}}</div>
+        <div class="top at">@</div>
+        <div class="top home">{{game.home_team}}<br />{{game.home_score}}</div>
+        <div class="bottom time">{{game.day_of_week}}, {{game.start_time}}</div>
+    </a>
+    {% endfor %}
+{% endblock %}

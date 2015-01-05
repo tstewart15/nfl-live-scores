@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+     
+     
+{% block title %}{{game.away_team}} @ {{game.home_team}}{% endblock %}
+ 
+{% block content %}
+    <h1>{{game.away_team}} @ {{game.home_team}}</h1>
+    <div class="game">
+        <div class="home">
+        	<h2 class="name">{{game.home_team}}</h2>
+        	<h3 class="score">{{game.home_score}}</h3>
+        </div>
+        <div class="away">
+        	<h2 class="name">{{game.away_team}}</h2>
+        	<h3 class="score">{{game.away_score}}</h3>
+        </div>
+    </div>
+{% endblock %}
