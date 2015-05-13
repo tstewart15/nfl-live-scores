@@ -13,46 +13,63 @@ h1 {
  */
 
 .content {
+	> *, .dropdown {
+		display: block;
+	}
 }
 
-.game {
+.dropdown {
+	font-size: 30px;
+	margin: 10px auto;
+	padding: 5px;
+}
+
+.gameViewlet {
 	border-radius: 5px;
-	color: darkblue;
-	display: block;
+	color: black;
 	font-size: 36px;
-	margin: 5px;
 	padding: 10px;
 	text-align: center;
 	text-decoration: none;
-
-	.at {
-	}
-
-	.away {
-	}
+	width: 320px;
 
 	.bottom {
 		display: block;
 	}
 
-	.home {
+	.teamName {
+		border-radius: 3px;
+		padding: 3px;
+		vertical-align: middle;
+	}
+
+	.time {
+		font-size: 20px;
+		padding: 5px 0px;
+		vertical-align: middle;
 	}
 
 	.top {
 		display: inline-block;
 		vertical-align: middle;
 	}
-
-	.time {
-		font-size: 24px;
-		padding: 10px 0px;
-	}
 	
 	&:hover {
-		background: green;
-		color: white;
+		box-shadow: inset 0 0 5px;
 	}
 	
 	&:visited {
+	}
+}
+
+/**
+ * IDS
+ */
+
+#completedGames {
+	font-size: 0;
+
+	> * {
+		display: inline-block;
 	}
 }

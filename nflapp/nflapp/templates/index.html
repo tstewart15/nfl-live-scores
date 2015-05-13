@@ -4,13 +4,24 @@
 {% block title %}Week {{weekNum}}{% endblock %}
  
 {% block content %}
-    <h1>Week {{weekNum}}</h1>
-    {% for game in games %}
-    <a class="game" href="/game/{{game.gsis_id}}">
-        <div class="top away">{{game.away_team}}<br />{{game.away_score}}</div>
-        <div class="top at">@</div>
-        <div class="top home">{{game.home_team}}<br />{{game.home_score}}</div>
-        <div class="bottom time">{{game.day_of_week}}, {{game.start_time}}</div>
-    </a>
-    {% endfor %}
+
+    <form id="weekSelectorForm">
+        {{weekForm}}
+    </form>
+
+    <div id="completedGames">
+        {% for game in games %}
+        <a id="{{game.gsis_id}}" class="gameViewlet" href="/game/{{game.gsis_id}}">
+            <div class="top"><span class="teamName" id="{{game.away_team}}">{{game.away_team}}</span><br /><span>{{game.away_score}}</span></div>
+            <div class="top">@</div>
+            <div class="top"><span class="teamName" id="{{game.home_team}}">{{game.home_team}}</span><br /><span>{{game.home_score}}</span></div>
+            <div class="bottom"><span class="time">{{game.day_of_week}}, {{game.start_time}}</span></div>
+        </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{STATIC_URL}}js/index.js"></script>
 {% endblock %}
