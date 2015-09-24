@@ -1,0 +1,9 @@
+Story board
+-----------
+- Get triplat-debug & tri-loading-indicator code
+- Replace month number with string
+- AJAX dropdown values
+- Unnecessary spacing function in index.js - use iron-flex-layout
+- Global styling
+- LESS in Polymer?
+- Get time zone of games?

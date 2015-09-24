@@ -1,0 +1,80 @@
+<link rel="import" href="../vendor/paper-button/paper-button.html">
+
+<dom-module id="game-viewlet">
+	
+	<style>
+		a {
+			color: black;
+			display: inline-block;
+			font-size: 36px;
+			margin: 5px;
+			padding: 15px 20px;
+			text-align: center;
+			text-decoration: none;
+		}
+		
+		a:hover {
+			box-shadow: inset 0 0 5px;
+		}
+
+		.bottom {
+			display: block;
+			line-height: 70%;
+		}
+
+		.teamName {
+			border-radius: 3px;
+			padding: 3px;
+			vertical-align: middle;
+		}
+
+		.time {
+			font-size: 20px;
+			padding: 5px 0px;
+			vertical-align: middle;
+		}
+
+		.top {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	</style>
+
+	<template>
+
+		<a id="{{gsisId}}" href="{{computePath(gsisId)}}">
+			<div class="top"><span class="teamName" id="{{awayTeam}}">{{awayTeam}}</span><br /><span>{{awayScore}}</span></div>
+			<div class="top">@</div>
+			<div class="top"><span class="teamName" id="{{homeTeam}}">{{homeTeam}}</span><br /><span>{{homeScore}}</span></div>
+			<div class="bottom"><span class="time"><span>{{dayOfWeek}}</span>, <span>{{startMonth}}</span> <span>{{startDate}}</span>, <span>{{startHour}}</span>:<span>{{startMinute}}</span></span></div>
+		</a>
+
+	</template>
+
+</dom-module>
+
+<script>
+
+	Polymer({
+		is: "game-viewlet",
+		properties: {
+			gsisId: {
+				type: String,
+				value: ""
+			},
+			dayOfWeek: String,
+			awayTeam: String,
+			awayScore: String,
+			homeTeam: String,
+			homeScore: String,
+			startDate: String,
+			startHour: String,
+			startMinute: String,
+			startMonth: String
+		},
+		computePath: function(id) {
+			return "/game/" + id;
+		}
+	});
+
+</script>

@@ -1,27 +1,22 @@
 {% extends 'base.html' %}
-     
-     
+
+{% block polymerImports %}
+<link rel="import" href="{{STATIC_URL}}components/page-main.html">
+<!-- <link rel="import" href="{{STATIC_URL}}vendor/iron-flex-layout/iron-flex-layout.html"> -->
+{% endblock %}
+
 {% block title %}Week {{weekNum}}{% endblock %}
  
 {% block content %}
 
-    <form id="weekSelectorForm">
-        {{weekForm}}
-    </form>
-
-    <div id="completedGames">
-        {% for game in games %}
-        <a id="{{game.gsis_id}}" class="gameViewlet" href="/game/{{game.gsis_id}}">
-            <div class="top"><span class="teamName" id="{{game.away_team}}">{{game.away_team}}</span><br /><span>{{game.away_score}}</span></div>
-            <div class="top">@</div>
-            <div class="top"><span class="teamName" id="{{game.home_team}}">{{game.home_team}}</span><br /><span>{{game.home_score}}</span></div>
-            <div class="bottom"><span class="time">{{game.day_of_week}}, {{game.start_time}}</span></div>
-        </a>
-        {% endfor %}
-    </div>
+    <page-main>
+        <form id="weekSelectorForm">
+            {{weekForm}}
+        </form>
+    </page-main>
 
 {% endblock %}
 
 {% block scripts %}
-<script src="{{STATIC_URL}}js/index.js"></script>
+<!-- <script src="{{STATIC_URL}}js/index.js"></script> -->
 {% endblock %}

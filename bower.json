@@ -1,0 +1,14 @@
+{
+  "name": "nflapp",
+  "version": "0.0.0",
+  "authors": [
+    "tjs"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "polymer": "Polymer/polymer",
+    "paper-spinner": "PolymerElements/paper-spinner",
+    "paper-button": "PolymerElements/paper-button",
+    "iron-ajax": "PolymerElements/iron-ajax#1.0.0"
+  }
+}

@@ -1,0 +1,101 @@
+<link rel="import" href="../vendor/iron-ajax/iron-ajax.html">
+<link rel="import" href="../vendor/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../vendor/paper-spinner/paper-spinner.html">
+<link rel="import" href="game-viewlet.html">
+
+<dom-module id="page-main">
+	
+	<style>
+
+		:host {
+			@apply(--layout-fit);
+			@apply(--layout-vertical);
+		}
+
+		.week-selector-form-content > ::content .dropdown {
+			display: block;
+			font-size: 30px;
+			margin: 10px auto;
+			padding: 5px;
+		}
+
+		.games-container {
+			@apply(--layout-flex);
+			@apply(--layout-scroll);
+			@apply(--layout-horizontal);
+			@apply(--layout-around-justified);
+			@apply(--layout-wrap);
+			align-content: flex-start;
+		}
+
+	</style>
+
+	<template>
+
+		<iron-ajax
+				id="gamesAjax"
+				url="/games/"
+				params="{{_weekParams}}"
+				handle-as="json"
+				loading="{{gamesAjaxLoading}}"
+				last-response="{{games}}"></iron-ajax>
+
+		<div class="week-selector-form-content"
+				on-input="_handleWeekSelectorFormInput">
+			<content select="#weekSelectorForm"></content>
+		</div>
+
+		<div class="games-container">
+			<!-- <paper-spinner active="{{gamesAjaxLoading}}"></paper-spinner> -->
+			<template is="dom-repeat" items="{{games}}">
+				<game-viewlet
+						gsis-id="{{item.gsis_id}}"
+						away-team="{{item.away_team}}"
+						away-score="{{item.away_score}}"
+						home-team="{{item.home_team}}"
+						home-score="{{item.home_score}}"
+						day-of-week="{{item.day_of_week}}"
+						start-month="{{item.start_month}}"
+						start-date="{{item.start_date}}"
+						start-hour="{{item.start_hour}}"
+						start-minute="{{item.start_minute}}"></game-viewlet>
+			</template>
+		</div>
+
+	</template>
+
+</dom-module>
+
+<script>
+
+	Polymer({
+		is: "page-main",
+
+		properties: {
+			staticUrl: String,
+			_weekParams: Object
+		},
+
+		ready: function() {
+			this._handleWeekSelectorFormInput();
+		},
+
+		_handleWeekSelectorFormInput: function() {
+			var yearSelector = Polymer.dom(this).querySelector("#yearSelector");
+			var selectedYear = yearSelector.value;
+			var weekTypeSelector = Polymer.dom(this).querySelector("#weekTypeSelector");
+			var selectedWeekType = weekTypeSelector.value;
+			var weekSelector = Polymer.dom(this).querySelector("#weekSelector");
+			var selectedWeek = weekSelector.value;
+
+			var reqParams = {};
+			reqParams["week"] = selectedWeek;
+			reqParams["weekType"] = selectedWeekType;
+			reqParams["year"] = selectedYear;
+
+			this.set("_weekParams", reqParams);
+			this.$.gamesAjax.generateRequest();
+		}
+	});
+
+</script>
