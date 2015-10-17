@@ -1,0 +1,76 @@
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<!--
+`tri-loading-indicator` dims the screen and displays a paper-spinner at the
+center whenever `show` is true.
+
+`@apply(--layout-fit)` is used to expand to the containing element.
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--tri-loading-indicator-clear-background` | The background color when `hide-background` is not set | `rgba(0, 0, 0, .65)`
+`--tri-loading-indicator-opaque-background` | The background color when `hide-background` is set | `white`
+-->
+
+<dom-module id="tri-loading-indicator">
+
+	<style>
+
+		div {
+			@apply(--layout-fit);
+			@apply(--layout-vertical);
+			@apply(--layout-center-center);
+			z-index: 9999;
+		}
+
+		.clear-background {
+			background-color: var(--tri-loading-indicator-clear-background, rgba(0, 0, 0, .65));
+		}
+
+		.opaque-background {
+			background-color: var(--tri-loading-indicator-opaque-background, white);
+		}
+
+		paper-spinner {
+			@apply(--tri-loading-spinner);
+			z-index: 99999;
+		}
+	</style>
+
+	<template>
+
+		<template is="dom-if" if="{{show}}">
+			<template is="dom-if" if="{{!hideBackground}}">
+				<div class="clear-background">
+					<paper-spinner active$="{{show}}"></paper-spinner>
+				</div>
+			</template>
+			<template is="dom-if" if="{{hideBackground}}">
+				<div class="opaque-background">
+					<paper-spinner active$="{{show}}"></paper-spinner>
+				</div>
+			</template>
+		</template>
+
+	</template>
+
+</dom-module>
+
+<script>
+	Polymer({
+
+		is: "tri-loading-indicator",
+
+		properties: {
+			show: Boolean,
+			hideBackground: {
+				type: Boolean,
+				value: false
+			}
+		}
+
+	});
+</script>

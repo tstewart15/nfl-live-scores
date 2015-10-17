@@ -1,0 +1,50 @@
+<!--
+A component to help debug data on the page.  When the value
+changes a console log will be printed.
+
+     <triplat-debug message="What is happening here?" value="{{data}}"></triplat-debug>
+-->
+<dom-module id="triplat-debug"><template></template></dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-debug",
+
+		properties: {
+
+			/**
+			 * Optional. 
+			 * This message will be printed to the console
+			 * when the value changes.
+			 */
+			message: {
+				type: String,
+				notify: false,
+				readOnly: false
+			},
+
+			/**
+			 * When this value changes, it will output it to
+			 * the console.
+			 */
+			value: {
+				type: Object,
+				notify: false,
+				readOnly: false
+			}
+
+		},
+
+		observers: [
+			"_handleValueChange(value.*)"
+		],
+
+		_handleValueChange: function(value) {
+			if (this.message) {
+				console.log(this.message);
+			}
+			console.log(this.value);
+		}
+
+	});
+</script>
