@@ -1,3 +1,0 @@
-[submodule "nflapp/nfldb"]
-	path = nflapp/nfldb
-	url = https://github.com/tstewart15/nfldb

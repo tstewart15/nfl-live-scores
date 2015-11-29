@@ -1,5 +1,6 @@
 .Python
 env
+env_backup
 bin
 lib
 include
