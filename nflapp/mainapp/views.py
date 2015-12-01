@@ -73,13 +73,13 @@ def get_games_for_week(request,
         week_type_val=week_type
     )
 
-    teams = nfldb.types.Team.all_teams(db)
+    # teams = nfldb.types.Team.all_teams(db)
 
     return render(request,
                   'index.html',
                   {
                       'games': games,
-                      'teams': teams,
+                      # 'teams': teams,
                       'weekForm': week_form,
                       'weekNum': week_num
                   })

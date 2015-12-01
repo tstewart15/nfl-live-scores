@@ -8,7 +8,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer",
     "paper-spinner": "PolymerElements/paper-spinner",
-    "paper-button": "PolymerElements/paper-button",
-    "iron-ajax": "PolymerElements/iron-ajax#1.0.0"
+    "iron-flex-layout": "PolymerElements/iron-flex-layout",
+    "iron-ajax": "PolymerElements/iron-ajax"
   }
 }

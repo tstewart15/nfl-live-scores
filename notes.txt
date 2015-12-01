@@ -1,9 +1,12 @@
 Story board
 -----------
-- Get triplat-debug & tri-loading-indicator code
+- Create stylesheet of NFL colors
 - Replace month number with string
+- Update tri-components... come up w/ naming convention
 - AJAX dropdown values
 - Unnecessary spacing function in index.js - use iron-flex-layout
+- ASYNC UPDATING!!!
+- Component doc page
 - Global styling
 - Delete JS files
 - LESS in Polymer?
