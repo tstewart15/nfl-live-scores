@@ -12,20 +12,48 @@
 			@apply(--layout-vertical);
 		}
 
-		.week-selector-form-content > ::content .dropdown {
-			display: block;
-			font-size: 30px;
-			margin: 10px auto;
-			padding: 5px;
-		}
-
-		.games-container {
+		.completed-games-container {
 			@apply(--layout-flex);
 			@apply(--layout-scroll);
 			@apply(--layout-horizontal);
 			@apply(--layout-around-justified);
 			@apply(--layout-wrap);
 			align-content: flex-start;
+		}
+
+		.container-label {
+			background-color: black;
+			color: white;
+			font-family: sans-serif;
+			font-size: 1.618em;
+			padding: 10px 0;
+			text-align: center;
+			text-transform: uppercase;
+		}
+
+		.live-games-container {
+			@apply(--layout-flex);
+			@apply(--layout-scroll);
+			@apply(--layout-horizontal);
+			@apply(--layout-around-justified);
+			@apply(--layout-wrap);
+			align-content: flex-start;
+		}
+
+		.scheduled-games-container {
+			@apply(--layout-flex);
+			@apply(--layout-scroll);
+			@apply(--layout-horizontal);
+			@apply(--layout-around-justified);
+			@apply(--layout-wrap);
+			align-content: flex-start;
+		}
+
+		.week-selector-form-content > ::content .dropdown {
+			display: block;
+			font-size: 30px;
+			margin: 10px auto;
+			padding: 5px;
 		}
 
 	</style>
@@ -37,30 +65,81 @@
 				url="/games/"
 				params="{{_weekParams}}"
 				handle-as="json"
-				loading="{{gamesAjaxLoading}}"
-				last-response="{{games}}"></iron-ajax>
+				loading="{{_gamesAjaxLoading}}"
+				last-response="{{_games}}"></iron-ajax>
 
-		<div class="week-selector-form-content"
-				on-input="_handleWeekSelectorFormInput">
-			<content select="#weekSelectorForm"></content>
-		</div>
+		<header>
+			<div class="week-selector-form-content"
+					on-input="_handleWeekSelectorFormInput">
+				<content select="#weekSelectorForm"></content>
+			</div>
+		</header>
+		
+		<section>
+			<div class="container-label" hidden$="{{_liveGamesEmpty(_games)}}">Live</div>
+			<div class="live-games-container">
+				<!-- <paper-spinner active="{{completedGamesAjaxLoading}}"></paper-spinner> -->
+				<template is="dom-repeat" items="{{_games}}" filter="_filterLiveGames" observe="finished isPlaying">
+					<game-viewlet
+							gsis-id="{{item.gsisId}}"
+							away-team="{{item.awayTeam}}"
+							away-score="{{item.awayScore}}"
+							home-team="{{item.homeTeam}}"
+							home-score="{{item.homeScore}}"
+							day-of-week="{{item.dayOfWeek}}"
+							start-month="{{item.startMonth}}"
+							start-date="{{item.startDate}}"
+							start-hour="{{item.startHour}}"
+							start-minute="{{item.startMinute}}"
+							is-playing="{{item.isPlaying}}"
+							finished="{{item.finished}}"></game-viewlet>
+				</template>
+			</div>
+		</section>
 
-		<div class="games-container">
-			<!-- <paper-spinner active="{{gamesAjaxLoading}}"></paper-spinner> -->
-			<template is="dom-repeat" items="{{games}}">
-				<game-viewlet
-						gsis-id="{{item.gsis_id}}"
-						away-team="{{item.away_team}}"
-						away-score="{{item.away_score}}"
-						home-team="{{item.home_team}}"
-						home-score="{{item.home_score}}"
-						day-of-week="{{item.day_of_week}}"
-						start-month="{{item.start_month}}"
-						start-date="{{item.start_date}}"
-						start-hour="{{item.start_hour}}"
-						start-minute="{{item.start_minute}}"></game-viewlet>
-			</template>
-		</div>
+		<section>
+			<div class="container-label" hidden$="{{_scheduledGamesEmpty(_games)}}">Scheduled</div>
+			<div class="scheduled-games-container">
+				<!-- <paper-spinner active="{{completedGamesAjaxLoading}}"></paper-spinner> -->
+				<template is="dom-repeat" items="{{_games}}" filter="_filterScheduledGames" observe="finished isPlaying">
+					<game-viewlet
+							gsis-id="{{item.gsisId}}"
+							away-team="{{item.awayTeam}}"
+							away-score="{{item.awayScore}}"
+							home-team="{{item.homeTeam}}"
+							home-score="{{item.homeScore}}"
+							day-of-week="{{item.dayOfWeek}}"
+							start-month="{{item.startMonth}}"
+							start-date="{{item.startDate}}"
+							start-hour="{{item.startHour}}"
+							start-minute="{{item.startMinute}}"
+							is-playing="{{item.isPlaying}}"
+							finished="{{item.finished}}"></game-viewlet>
+				</template>
+			</div>
+		</section>
+
+		<section>
+			<div class="container-label" hidden$="{{_completedGamesEmpty(_games)}}">Completed</div>
+			<div class="completed-games-container">
+				<!-- <paper-spinner active="{{_completedGamesAjaxLoading}}"></paper-spinner> -->
+				<template is="dom-repeat" items="{{_games}}" filter="_filterCompletedGames" observe="finished">
+					<game-viewlet
+							gsis-id="{{item.gsisId}}"
+							away-team="{{item.awayTeam}}"
+							away-score="{{item.awayScore}}"
+							home-team="{{item.homeTeam}}"
+							home-score="{{item.homeScore}}"
+							day-of-week="{{item.dayOfWeek}}"
+							start-month="{{item.startMonth}}"
+							start-date="{{item.startDate}}"
+							start-hour="{{item.startHour}}"
+							start-minute="{{item.startMinute}}"
+							is-playing="{{item.isPlaying}}"
+							finished="{{item.finished}}"></game-viewlet>
+				</template>
+			</div>
+		</section>
 
 	</template>
 
@@ -80,6 +159,23 @@
 			this._handleWeekSelectorFormInput();
 		},
 
+		_completedGamesEmpty: function(games) {
+			var completedGames = games.filter(this._filterCompletedGames);
+			return completedGames.length == 0;
+		},
+
+		_filterCompletedGames: function(item) {
+			return item.finished;
+		},
+
+		_filterLiveGames: function(item) {
+			return item.isPlaying && !item.finished;
+		},
+
+		_filterScheduledGames: function(item) {
+			return !item.isPlaying && !item.finished;
+		},
+
 		_handleWeekSelectorFormInput: function() {
 			var yearSelector = Polymer.dom(this).querySelector("#yearSelector");
 			var selectedYear = yearSelector.value;
@@ -95,6 +191,20 @@
 
 			this.set("_weekParams", reqParams);
 			this.$.gamesAjax.generateRequest();
+		},
+
+		_isEmpty: function(arr) {
+			return !arr || arr.length == 0;
+		},
+
+		_liveGamesEmpty: function(games) {
+			var liveGames = games.filter(this._filterLiveGames);
+			return liveGames.length == 0;
+		},
+
+		_scheduledGamesEmpty: function(games) {
+			var scheduledGames = games.filter(this._filterScheduledGames);
+			return scheduledGames.length == 0;
 		}
 	});
 

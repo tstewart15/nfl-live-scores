@@ -4,7 +4,7 @@ from django.shortcuts import render
 from forms import WeekForm
 from mainapp import WEEK_TYPE_MAP, LAST_YEAR
 
-CURRENT_WEEK = 1
+CURRENT_WEEK = 13
 CURRENT_WEEK_TYPE = 'reg'
 CURRENT_YEAR = LAST_YEAR
 
@@ -86,6 +86,13 @@ def get_games_for_week(request,
 
 
 def games(request):
+    """
+    Return the Game objects for the given NFL week.
+    Expected request parameters:
+        `year` - The year of the games to return
+        `weekType` - Either `pre`(season), `reg`(ular season), or `post`(season)
+        `week` - The number of the week within the context of the given year and week type
+    """
     year = request.GET.get("year")
     week_type = request.GET.get("weekType")
     week_num = request.GET.get("week")
@@ -107,16 +114,18 @@ def games(request):
     games = q.as_games()
     gamesJSON = []
     for g in games:
-        game = {"gsis_id": g.gsis_id,
-                "away_team": g.away_team,
-                "away_score": g.away_score,
-                "home_team": g.home_team,
-                "home_score": g.home_score,
-                "day_of_week": str(g.day_of_week),
-                "start_month": g.start_time.month,
-                "start_date": g.start_time.day,
-                "start_hour": g.start_time.hour,
-                "start_minute": g.start_time.minute}
+        game = {"gsisId": g.gsis_id,
+                "awayTeam": g.away_team,
+                "awayScore": g.away_score,
+                "homeTeam": g.home_team,
+                "homeScore": g.home_score,
+                "dayOfWeek": str(g.day_of_week),
+                "startMonth": g.start_time.month,
+                "startDate": g.start_time.day,
+                "startHour": g.start_time.hour,
+                "startMinute": g.start_time.minute,
+                "finished": g.finished,
+                "isPlaying": g.is_playing}
         gamesJSON.append(game)
 
     return JsonResponse(gamesJSON, safe=False)

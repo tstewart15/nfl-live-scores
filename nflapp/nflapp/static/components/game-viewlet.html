@@ -1,10 +1,9 @@
-<link rel="import" href="../vendor/paper-button/paper-button.html">
-
 <dom-module id="game-viewlet">
 	
 	<style>
-		a {
+		:host {
 			color: black;
+			cursor: pointer;
 			display: inline-block;
 			font-size: 36px;
 			margin: 5px;
@@ -13,7 +12,7 @@
 			text-decoration: none;
 		}
 		
-		a:hover {
+		:host:hover {
 			box-shadow: inset 0 0 5px;
 		}
 
@@ -42,12 +41,10 @@
 
 	<template>
 
-		<a id="{{gsisId}}" href="{{computePath(gsisId)}}">
-			<div class="top"><span class="teamName" id="{{awayTeam}}">{{awayTeam}}</span><br /><span>{{awayScore}}</span></div>
-			<div class="top">@</div>
-			<div class="top"><span class="teamName" id="{{homeTeam}}">{{homeTeam}}</span><br /><span>{{homeScore}}</span></div>
-			<div class="bottom"><span class="time"><span>{{dayOfWeek}}</span>, <span>{{startMonth}}</span> <span>{{startDate}}</span>, <span>{{startHour}}</span>:<span>{{startMinute}}</span></span></div>
-		</a>
+		<div class="top"><span class="teamName" id="{{awayTeam}}">{{awayTeam}}</span><br /><span>{{awayScore}}</span></div>
+		<div class="top">@</div>
+		<div class="top"><span class="teamName" id="{{homeTeam}}">{{homeTeam}}</span><br /><span>{{homeScore}}</span></div>
+		<div class="bottom"><span class="time"><span>{{dayOfWeek}}</span>, <span>{{startMonth}}</span> <span>{{startDate}}</span>, <span>{{startHour}}</span>:<span>{{startMinute}}</span></span></div>
 
 	</template>
 
@@ -70,7 +67,9 @@
 			startDate: String,
 			startHour: String,
 			startMinute: String,
-			startMonth: String
+			startMonth: String,
+			isPlaying: Boolean,
+			finished: Boolean
 		},
 		computePath: function(id) {
 			return "/game/" + id;

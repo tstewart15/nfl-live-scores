@@ -1,11 +1,12 @@
 Story board
 -----------
-- Create stylesheet of NFL colors
+- Flexbox game-viewlet
 - Replace month number with string
-- Update tri-components... come up w/ naming convention
-- AJAX dropdown values
-- Unnecessary spacing function in index.js - use iron-flex-layout
+- Include week params in URL? Or have it default to current week.
+- Create stylesheet of NFL colors
+- AJAX dropdown values?
 - ASYNC UPDATING!!!
+- Update tri-components... come up w/ naming convention
 - Component doc page
 - Global styling
 - Delete JS files
