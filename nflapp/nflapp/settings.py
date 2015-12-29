@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 SITE_ID = 1
 
+# SwampDragon settings
+SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+
 
 # Application definition
 
@@ -43,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'swampdragon',
     'mainapp',
 )
 

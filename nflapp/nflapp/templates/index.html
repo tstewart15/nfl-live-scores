@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block polymerImports %}
-<link rel="import" href="{{STATIC_URL}}components/page-main.html">
-<!-- <link rel="import" href="{{STATIC_URL}}vendor/iron-flex-layout/iron-flex-layout.html"> -->
+
 {% endblock %}
 
 {% block title %}Week {{weekNum}}{% endblock %}
@@ -15,8 +14,4 @@
         </form>
     </page-main>
 
-{% endblock %}
-
-{% block scripts %}
-<!-- <script src="{{STATIC_URL}}js/index.js"></script> -->
 {% endblock %}

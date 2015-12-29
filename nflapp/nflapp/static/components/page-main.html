@@ -1,8 +1,3 @@
-<link rel="import" href="../vendor/iron-ajax/iron-ajax.html">
-<link rel="import" href="../vendor/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../vendor/paper-spinner/paper-spinner.html">
-<link rel="import" href="game-viewlet.html">
-
 <dom-module id="page-main">
 	
 	<style>
@@ -24,8 +19,8 @@
 		.container-label {
 			background-color: black;
 			color: white;
-			font-family: sans-serif;
-			font-size: 1.618em;
+			font-size: 1.618rem;
+			font-weight: lighter;
 			padding: 10px 0;
 			text-align: center;
 			text-transform: uppercase;
@@ -49,10 +44,14 @@
 			align-content: flex-start;
 		}
 
+		.week-selector-form-content {
+			@apply(--layout-horizontal);
+			@apply(--layout-center-center);
+		}
+
 		.week-selector-form-content > ::content .dropdown {
-			display: block;
-			font-size: 30px;
-			margin: 10px auto;
+			font-size: 1.618rem;
+			margin: 10px;
 			padding: 5px;
 		}
 
@@ -78,19 +77,23 @@
 		<section>
 			<div class="container-label" hidden$="{{_liveGamesEmpty(_games)}}">Live</div>
 			<div class="live-games-container">
-				<!-- <paper-spinner active="{{completedGamesAjaxLoading}}"></paper-spinner> -->
+				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
 				<template is="dom-repeat" items="{{_games}}" filter="_filterLiveGames" observe="finished isPlaying">
 					<game-viewlet
+							game-type="live"
 							gsis-id="{{item.gsisId}}"
 							away-team="{{item.awayTeam}}"
 							away-score="{{item.awayScore}}"
 							home-team="{{item.homeTeam}}"
 							home-score="{{item.homeScore}}"
 							day-of-week="{{item.dayOfWeek}}"
-							start-month="{{item.startMonth}}"
+							start-year="{{item.startYear}}"
+							start-month-name="{{item.startMonthName}}"
 							start-date="{{item.startDate}}"
 							start-hour="{{item.startHour}}"
 							start-minute="{{item.startMinute}}"
+							start-am-pm="{{item.startAmPm}}"
+							time-zone="{{item.timeZone}}"
 							is-playing="{{item.isPlaying}}"
 							finished="{{item.finished}}"></game-viewlet>
 				</template>
@@ -100,19 +103,23 @@
 		<section>
 			<div class="container-label" hidden$="{{_scheduledGamesEmpty(_games)}}">Scheduled</div>
 			<div class="scheduled-games-container">
-				<!-- <paper-spinner active="{{completedGamesAjaxLoading}}"></paper-spinner> -->
+				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
 				<template is="dom-repeat" items="{{_games}}" filter="_filterScheduledGames" observe="finished isPlaying">
 					<game-viewlet
+							game-type="scheduled"
 							gsis-id="{{item.gsisId}}"
 							away-team="{{item.awayTeam}}"
 							away-score="{{item.awayScore}}"
 							home-team="{{item.homeTeam}}"
 							home-score="{{item.homeScore}}"
 							day-of-week="{{item.dayOfWeek}}"
-							start-month="{{item.startMonth}}"
+							start-year="{{item.startYear}}"
+							start-month-name="{{item.startMonthName}}"
 							start-date="{{item.startDate}}"
 							start-hour="{{item.startHour}}"
 							start-minute="{{item.startMinute}}"
+							start-am-pm="{{item.startAmPm}}"
+							time-zone="{{item.timeZone}}"
 							is-playing="{{item.isPlaying}}"
 							finished="{{item.finished}}"></game-viewlet>
 				</template>
@@ -122,19 +129,23 @@
 		<section>
 			<div class="container-label" hidden$="{{_completedGamesEmpty(_games)}}">Completed</div>
 			<div class="completed-games-container">
-				<!-- <paper-spinner active="{{_completedGamesAjaxLoading}}"></paper-spinner> -->
+				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
 				<template is="dom-repeat" items="{{_games}}" filter="_filterCompletedGames" observe="finished">
 					<game-viewlet
+							game-type="completed"
 							gsis-id="{{item.gsisId}}"
 							away-team="{{item.awayTeam}}"
 							away-score="{{item.awayScore}}"
 							home-team="{{item.homeTeam}}"
 							home-score="{{item.homeScore}}"
 							day-of-week="{{item.dayOfWeek}}"
-							start-month="{{item.startMonth}}"
+							start-year="{{item.startYear}}"
+							start-month-name="{{item.startMonthName}}"
 							start-date="{{item.startDate}}"
 							start-hour="{{item.startHour}}"
 							start-minute="{{item.startMinute}}"
+							start-am-pm="{{item.startAmPm}}"
+							time-zone="{{item.timeZone}}"
 							is-playing="{{item.isPlaying}}"
 							finished="{{item.finished}}"></game-viewlet>
 				</template>

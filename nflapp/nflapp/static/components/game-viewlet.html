@@ -1,11 +1,12 @@
 <dom-module id="game-viewlet">
 	
 	<style>
+
 		:host {
+			@apply(--layout-vertical);
+			border-radius: 4px;
 			color: black;
 			cursor: pointer;
-			display: inline-block;
-			font-size: 36px;
 			margin: 5px;
 			padding: 15px 20px;
 			text-align: center;
@@ -13,38 +14,102 @@
 		}
 		
 		:host:hover {
-			box-shadow: inset 0 0 5px;
+			background-color: lightgray;
 		}
 
-		.bottom {
-			display: block;
-			line-height: 70%;
+		.at-symbol-completed {
+			font-size: 2rem;
+			margin: 0 10px;
 		}
 
-		.teamName {
-			border-radius: 3px;
-			padding: 3px;
-			vertical-align: middle;
+		.at-symbol-scheduled {
+			font-size: 2rem;
+			margin: 0 5px;
 		}
 
-		.time {
-			font-size: 20px;
+		.score {
+			font-size: 2rem;
+		}
+
+		.scoreboard {
+			@apply(--layout-horizontal);
+			@apply(--layout-center-center);
+		}
+
+		.team-name-completed {
+			border-radius: 5px;
+			font-size: 2rem;
+			padding: 5px;
+		}
+
+		.team-name-scheduled-left {
+			border-radius: 10px 0 0 10px;
+			font-size: 2.5rem;
+			padding: 5px;
+		}
+
+		.team-name-scheduled-right {
+			border-radius: 0 10px 10px 0;
+			font-size: 2.5rem;
+			padding: 5px;
+		}
+
+		.team-score {
+			@apply(--layout-vertical);
+			@apply(--layout-center-center);
+		}
+
+		.time-stamp {
+			font-size: 1rem;
 			padding: 5px 0px;
-			vertical-align: middle;
 		}
 
-		.top {
-			display: inline-block;
-			vertical-align: middle;
-		}
 	</style>
 
 	<template>
 
-		<div class="top"><span class="teamName" id="{{awayTeam}}">{{awayTeam}}</span><br /><span>{{awayScore}}</span></div>
-		<div class="top">@</div>
-		<div class="top"><span class="teamName" id="{{homeTeam}}">{{homeTeam}}</span><br /><span>{{homeScore}}</span></div>
-		<div class="bottom"><span class="time"><span>{{dayOfWeek}}</span>, <span>{{startMonth}}</span> <span>{{startDate}}</span>, <span>{{startHour}}</span>:<span>{{startMinute}}</span></span></div>
+		<template is="dom-if" if="{{_isCompletedGame(gameType)}}">
+			<div class="scoreboard">
+				<div class="team-score">
+					<div class="team-name-completed" scoreboard-team$="{{awayTeam}}">{{awayTeam}}</div>
+					<div class="score">{{awayScore}}</div>
+				</div>
+				<div class="at-symbol-completed">@</div>
+				<div class="team-score">
+					<div class="team-name-completed" scoreboard-team$="{{homeTeam}}">{{homeTeam}}</div>
+					<div class="score">{{homeScore}}</div>
+				</div>
+			</div>
+			<div class="time-stamp">{{dayOfWeek}}, {{startMonthName}} {{startDate}}, {{startYear}}, {{startHour}}:{{startMinute}}{{startAmPm}}</div>
+		</template>
+
+		<template is="dom-if" if="{{_isLiveGame(gameType)}}">
+			<div class="scoreboard">
+				<div class="team-score">
+					<div class="team-name-completed" scoreboard-team$="{{awayTeam}}">{{awayTeam}}</div>
+					<div class="score">{{awayScore}}</div>
+				</div>
+				<div class="at-symbol-completed">@</div>
+				<div class="team-score">
+					<div class="team-name-completed" scoreboard-team$="{{homeTeam}}">{{homeTeam}}</div>
+					<div class="score">{{homeScore}}</div>
+				</div>
+			</div>
+			<div class="time-stamp">{{dayOfWeek}}, {{startMonthName}} {{startDate}}, {{startYear}}, {{startHour}}:{{startMinute}}{{startAmPm}}</div>
+		</template>
+
+		<template is="dom-if" if="{{_isScheduledGame(gameType)}}">
+			<div class="scoreboard">
+				<div class="team-score">
+					<div class="team-name-scheduled-left" scoreboard-team$="{{awayTeam}}">{{awayTeam}}</div>
+				</div>
+				<div class="at-symbol-scheduled">@</div>
+				<div class="team-score">
+					<div class="team-name-scheduled-right" scoreboard-team$="{{homeTeam}}">{{homeTeam}}</div>
+				</div>
+			</div>
+			<div class="time-stamp">{{dayOfWeek}}, {{startMonthName}} {{startDate}}, {{startYear}}, {{startHour}}:{{startMinute}}{{startAmPm}}</div>
+		</template>
 
 	</template>
 
@@ -54,7 +119,12 @@
 
 	Polymer({
 		is: "game-viewlet",
+
 		properties: {
+			gameType: {
+				type: String,
+				value: "" // possible values: "live", "scheduled", "completed"
+			},
 			gsisId: {
 				type: String,
 				value: ""
@@ -64,15 +134,27 @@
 			awayScore: String,
 			homeTeam: String,
 			homeScore: String,
+			startYear: String,
 			startDate: String,
 			startHour: String,
 			startMinute: String,
-			startMonth: String,
+			startMonthName: String,
+			startAmPm: String,
+			timeZone: String,
 			isPlaying: Boolean,
 			finished: Boolean
 		},
-		computePath: function(id) {
-			return "/game/" + id;
+
+		_isCompletedGame: function(gameType) {
+			return gameType == "completed";
+		},
+
+		_isLiveGame: function(gameType) {
+			return gameType == "live";
+		},
+
+		_isScheduledGame: function(gameType) {
+			return gameType == "scheduled";
 		}
 	});
 

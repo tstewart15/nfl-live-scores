@@ -1,14 +1,14 @@
 Story board
 -----------
-- Flexbox game-viewlet
-- Replace month number with string
-- Include week params in URL? Or have it default to current week.
-- Create stylesheet of NFL colors
-- AJAX dropdown values?
 - ASYNC UPDATING!!!
+- Style live game viewlets
+- AJAX dropdown values?
 - Update tri-components... come up w/ naming convention
+- Include week params in URL? Or have it default to current week.
+- Specify home vs away color scheme
 - Component doc page
-- Global styling
 - Delete JS files
 - LESS in Polymer?
 - Get time zone of games?
+- FOUC due to Polymer process delay ('hidden' attributes)
+- Recommended project directory structure: http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/
