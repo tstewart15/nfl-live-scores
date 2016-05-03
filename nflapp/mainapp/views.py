@@ -1,12 +1,10 @@
-import nfldb, json
+import nfldb
+import pgpubsub
 from django.http import JsonResponse
 from django.shortcuts import render
 from forms import WeekForm
-from mainapp import WEEK_TYPE_MAP, LAST_YEAR
-
-CURRENT_WEEK = 16
-CURRENT_WEEK_TYPE = 'reg'
-CURRENT_YEAR = LAST_YEAR
+from mainapp import WEEK_TYPE_MAP, CURRENT_WEEK, CURRENT_WEEK_TYPE, \
+    CURRENT_YEAR
 
 
 def game(request, gsis):
@@ -90,8 +88,10 @@ def games(request):
     Return the Game objects as JSON for the given NFL week.
     Expected request parameters:
         `year` - The year of the games to return
-        `weekType` - Either `pre`(season), `reg`(ular season), or `post`(season)
-        `week` - The number of the week within the context of the given year and week type
+        `weekType` - Either `pre`(season), `reg`(ular season), or
+            `post`(season)
+        `week` - The number of the week within the context of the given year
+            and week type
     """
     year = request.GET.get("year")
     week_type = request.GET.get("weekType")
@@ -124,7 +124,8 @@ def games(request):
                 "startMonth": g.start_time.month,
                 "startMonthName": g.start_time.strftime("%B"),
                 "startDate": g.start_time.day,
-                "startHour": g.start_time.strftime("%I").lstrip("0").replace(" 0", " "),
+                "startHour": g.start_time.strftime("%I").lstrip("0")
+                             .replace(" 0", " "),
                 "startMinute": g.start_time.strftime("%M"),
                 "startAmPm": g.start_time.strftime("%p"),
                 "timeZone": g.start_time.strftime("%Z"),

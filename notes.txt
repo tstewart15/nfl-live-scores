@@ -3,12 +3,14 @@ Story board
 - ASYNC UPDATING!!!
 - Style live game viewlets
 - AJAX dropdown values?
-- Update tri-components... come up w/ naming convention
 - Include week params in URL? Or have it default to current week.
+- Update tri-components... come up w/ naming convention
 - Specify home vs away color scheme
 - Component doc page
 - Delete JS files
 - LESS in Polymer?
 - Get time zone of games?
 - FOUC due to Polymer process delay ('hidden' attributes)
+- Build automation (see setuptools?)
+- Unit testing?
 - Recommended project directory structure: http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/
