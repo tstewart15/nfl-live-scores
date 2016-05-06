@@ -1,0 +1,59 @@
+<link rel="import" href="../vendor/carbon-route/carbon-route.html">
+<link rel="import" href="../vendor/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../vendor/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../vendor/neon-animation/animations/slide-left-animation.html">
+
+<link rel="import" href="page-game.html">
+<link rel="import" href="page-main.html">
+
+<dom-module id="nfl-feed">
+	
+	<style>
+
+		:host {
+			@apply(--layout-fit);
+			@apply(--layout-vertical);
+		}
+
+		neon-animated-pages {
+			@apply(--layout-flex);
+			@apply(--layout-vertical);
+		}
+
+		neon-animated-pages > * {
+			@apply(--layout-flex);
+		}
+
+	</style>
+
+	<template>
+
+		<!-- <carbon-location route="{{route}}"></carbon-location>
+		<carbon-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{tail}}"></carbon-route> -->
+
+		<neon-animated-pages selected="{{_selectedPage}}" entry-animation="0" exit-animation="slide-left-animation">
+
+			<page-main></page-main>
+
+			<page-game></page-game>
+			
+		</neon-animated-pages>
+
+	</template>
+
+</dom-module>
+
+<script>
+
+	Polymer({
+		is: "nfl-feed",
+
+		properties: {
+			_selectedPage: {
+				type: Number,
+				value: 0
+			}
+		},
+	});
+
+</script>

@@ -3,27 +3,21 @@
 	<head>
 
 		<meta charset="utf-8">
-		<title>{% block title %}{% endblock %}</title>
+		<title>nflFeed Dev</title>
 
 		<!-- FOUC fix -->
-		<style type="text/css">
+		<!-- <style type="text/css">
 			.js .fouc { display: none; }
 		</style>
 		<script type="text/javascript">
 			document.documentElement.className = 'js';
-		</script>
+		</script> -->
 
 		<!-- Polymer -->
 		<script src="{{STATIC_URL}}vendor/webcomponentsjs/webcomponents-lite.min.js" type="text/javascript"></script>
 		<link rel="import" href="{{STATIC_URL}}vendor/polymer/polymer.html">
-		<link rel="import" href="{{STATIC_URL}}vendor/iron-ajax/iron-ajax.html">
-		<link rel="import" href="{{STATIC_URL}}vendor/iron-flex-layout/iron-flex-layout.html">
-		<link rel="import" href="{{STATIC_URL}}vendor/paper-spinner/paper-spinner.html">
-		<link rel="import" href="{{STATIC_URL}}components/game-viewlet.html">
 		<link rel="import" href="{{STATIC_URL}}components/global-style.html">
-		<link rel="import" href="{{STATIC_URL}}components/page-main.html">
-		{% block polymerImports %}
-		{% endblock %}
+		<link rel="import" href="{{STATIC_URL}}components/nfl-feed.html">
 
 		<!-- Font -->
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Oswald:300,400,700' type='text/css'>
@@ -31,14 +25,15 @@
 	</head>
 	<body>
 
-		<div class="content fouc">
-			{% block content %}
-			{% endblock %}
-		</div>
+		<nfl-feed></nfl-feed>
+
+		<!-- {% block content %}
+		{% endblock %} -->
 
 		<!--FOUC fix-->
-		<script type="text/javascript">
+		<!-- <script type="text/javascript">
 			document.querySelector(".fouc").style.display = "block";
-		</script>
+		</script> -->
+
 	</body>
 </html>

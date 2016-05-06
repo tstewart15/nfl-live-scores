@@ -1,16 +1,17 @@
 Story board
 -----------
+- Page navigation (add game page) + neon animation?
 - ASYNC UPDATING!!!
+- Page URL routing (see pushState history API)
 - Style live game viewlets
-- AJAX dropdown values?
 - Include week params in URL? Or have it default to current week.
 - Update tri-components... come up w/ naming convention
-- Specify home vs away color scheme
-- Component doc page
 - Delete JS files
+- Component doc page?
 - LESS in Polymer?
 - Get time zone of games?
-- FOUC due to Polymer process delay ('hidden' attributes)
+- FOUC due to Polymer process delay ('hidden' attributes) + FOUC fix?
+- Favicon
 - Build automation (see setuptools?)
 - Unit testing?
 - Recommended project directory structure: http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/

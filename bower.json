@@ -9,6 +9,8 @@
     "polymer": "Polymer/polymer",
     "paper-spinner": "PolymerElements/paper-spinner",
     "iron-flex-layout": "PolymerElements/iron-flex-layout",
-    "iron-ajax": "PolymerElements/iron-ajax"
+    "iron-ajax": "PolymerElements/iron-ajax",
+    "carbon-route": "PolymerElements/carbon-route",
+    "neon-animation": "PolymerElements/neon-animation"
   }
 }

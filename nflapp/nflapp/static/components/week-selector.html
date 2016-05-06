@@ -1,0 +1,184 @@
+<dom-module id="week-selector">
+	
+	<style>
+
+		:host {
+			@apply(--layout-horizontal);
+			@apply(--layout-center-center);
+		}
+
+		.dropdown {
+			font-family: var(--global-font);
+			font-size: 1.618rem;
+			margin: 10px;
+			padding: 5px;
+		}
+
+	</style>
+
+	<template>
+
+		<select class="dropdown" id="yearSelector" on-input="_handleInputYear">
+			<option value="2009">2009</option>
+			<option value="2010">2010</option>
+			<option value="2011">2011</option>
+			<option value="2012">2012</option>
+			<option value="2013">2013</option>
+			<option value="2014">2014</option>
+			<option value="2015" selected>2015</option>
+		</select>
+
+		<select class="dropdown" id="weekTypeSelector" on-input="_handleInputWeekType">
+			<option value="pre">Preseason</option>
+			<option value="reg" selected>Regular</option>
+			<option value="post">Postseason</option>
+		</select>
+
+		<select class="dropdown" id="regWeekSelector" on-input="_handleInputWeek" hidden$="[[!_isWeekTypeReg(_selectedWeekType)]]">
+			<option value="1">Week 1</option>
+			<option value="2">Week 2</option>
+			<option value="3">Week 3</option>
+			<option value="4">Week 4</option>
+			<option value="5">Week 5</option>
+			<option value="6">Week 6</option>
+			<option value="7">Week 7</option>
+			<option value="8">Week 8</option>
+			<option value="9">Week 9</option>
+			<option value="10">Week 10</option>
+			<option value="11">Week 11</option>
+			<option value="12">Week 12</option>
+			<option value="13">Week 13</option>
+			<option value="14">Week 14</option>
+			<option value="15">Week 15</option>
+			<option value="16">Week 16</option>
+			<option value="17" selected>Week 17</option>
+		</select>
+		<select class="dropdown" id="preWeekSelector" on-input="_handleInputWeek" hidden$="[[!_isWeekTypePre(_selectedWeekType)]]">
+			<option value="1">Week 1</option>
+			<option value="2">Week 2</option>
+			<option value="3">Week 3</option>
+			<option value="4">Week 4</option>
+		</select>
+		<select class="dropdown" id="postWeekSelector" on-input="_handleInputWeek" hidden$="[[!_isWeekTypePost(_selectedWeekType)]]">
+			<option value="1">Wild Card Round</option>
+			<option value="2">Divisional Round</option>
+			<option value="3">Conference Championship</option>
+			<option value="4">Super Bowl</option>
+		</select>
+
+	</template>
+
+</dom-module>
+
+<script>
+
+	Polymer({
+		is: "week-selector",
+
+		properties: {
+			/*initialYear: {
+				type: String
+			},
+
+			initialWeekType: {
+				type: String
+			},
+
+			initialWeek: {
+				type: String
+			},*/
+
+			/*
+			 * Object representing the current selection.
+			 * Format: { "week": [week], "weekType": [weekType], "year": [year] }
+			 */
+			selectedWeekObject: {
+				type: Object,
+				readOnly: true,
+				notify: true
+			},
+
+			/*_selectedPostWeek: {
+				type: String,
+				value: "1"
+			},
+
+			_selectedPreWeek: {
+				type: String,
+				value: "1"
+			},
+
+			_selectedRegWeek: {
+				type: String,
+				value: "17"
+			},*/
+
+			_selectedWeekType: {
+				type: String,
+				value: "reg"
+			},
+
+			/*_selectedYear: {
+				type: String,
+				value: "2015"
+			}*/
+		},
+
+		ready: function() {
+			this._updateSelectedWeekObject();
+		},
+
+		_handleInputWeek: function(e) {
+			this._updateSelectedWeekObject();
+		},
+
+		_handleInputWeekType: function(e) {
+			this._updateSelectedWeekObject();
+		},
+
+		_handleInputYear: function(e) {
+			this._updateSelectedWeekObject();
+		},
+
+		_isWeekTypePost: function(weekType) {
+			return weekType == "post";
+		},
+
+		_isWeekTypePre: function(weekType) {
+			return weekType == "pre";
+		},
+
+		_isWeekTypeReg: function(weekType) {
+			return weekType == "reg";
+		},
+
+		_updateSelectedWeekObject: function() {
+			this.debounce("updateSelectedWeekObject", function() {
+				var selectedWeekType = this.$.weekTypeSelector.value;
+				var selectedYear = this.$.yearSelector.value;
+
+				var selectedWeek;
+				switch (selectedWeekType) {
+					case "pre":
+						selectedWeek = this.$.preWeekSelector.value;
+						break;
+					case "reg":
+						selectedWeek = this.$.regWeekSelector.value;
+						break;
+					case "post":
+						selectedWeek = this.$.postWeekSelector.value;
+						break;
+				}
+
+				this._selectedWeekType = selectedWeekType;
+
+				var selectedWeekObject = {};
+				selectedWeekObject.week = selectedWeek;
+				selectedWeekObject.weekType = selectedWeekType;
+				selectedWeekObject.year = selectedYear;
+				this._setSelectedWeekObject(selectedWeekObject);
+			});
+		}
+	});
+
+</script>

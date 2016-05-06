@@ -1,9 +1,14 @@
+<link rel="import" href="../vendor/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="game-viewlet.html">
+<link rel="import" href="loading-indicator.html">
+<link rel="import" href="week-selector.html">
+
 <dom-module id="page-main">
 	
 	<style>
 
 		:host {
-			@apply(--layout-fit);
 			@apply(--layout-vertical);
 		}
 
@@ -26,6 +31,12 @@
 			text-transform: uppercase;
 		}
 
+		.header {
+			@apply(--layout-horizontal);
+			@apply(--layout-center);
+			flex-shrink: 0;
+		}
+
 		.live-games-container {
 			@apply(--layout-flex);
 			@apply(--layout-scroll);
@@ -44,15 +55,8 @@
 			align-content: flex-start;
 		}
 
-		.week-selector-form-content {
-			@apply(--layout-horizontal);
-			@apply(--layout-center-center);
-		}
-
-		.week-selector-form-content > ::content .dropdown {
-			font-size: 1.618rem;
-			margin: 10px;
-			padding: 5px;
+		.week-selector {
+			@apply(--layout-flex);
 		}
 
 	</style>
@@ -62,17 +66,16 @@
 		<iron-ajax
 				id="gamesAjax"
 				url="/games/"
-				params="{{_weekParams}}"
+				params="{{_gamesAjaxParams}}"
 				handle-as="json"
 				loading="{{_gamesAjaxLoading}}"
 				last-response="{{_games}}"></iron-ajax>
 
-		<header>
-			<div class="week-selector-form-content"
-					on-input="_handleWeekSelectorFormInput">
-				<content select="#weekSelectorForm"></content>
-			</div>
-		</header>
+		<loading-indicator show="[[_isLoading(_gamesAjaxLoading)]]" hide-background></loading-indicator>
+
+		<div class="header">
+			<week-selector selected-week-object="{{_selectedWeekObject}}" class="week-selector"></week-selector>
+		</div>
 		
 		<section>
 			<div class="container-label" hidden$="{{_liveGamesEmpty(_games)}}">Live</div>
@@ -161,14 +164,7 @@
 	Polymer({
 		is: "page-main",
 
-		properties: {
-			staticUrl: String,
-			_weekParams: Object
-		},
-
-		ready: function() {
-			this._handleWeekSelectorFormInput();
-		},
+		observers: [ "_handleSelectedWeekObjectChange(_selectedWeekObject)" ],
 
 		_completedGamesEmpty: function(games) {
 			var completedGames = games.filter(this._filterCompletedGames);
@@ -187,8 +183,8 @@
 			return !item.isPlaying && !item.finished;
 		},
 
-		_handleWeekSelectorFormInput: function() {
-			var yearSelector = Polymer.dom(this).querySelector("#yearSelector");
+		_handleSelectedWeekObjectChange: function(selectedWeekObj) {
+			/*var yearSelector = Polymer.dom(this).querySelector("#yearSelector");
 			var selectedYear = yearSelector.value;
 			var weekTypeSelector = Polymer.dom(this).querySelector("#weekTypeSelector");
 			var selectedWeekType = weekTypeSelector.value;
@@ -198,14 +194,18 @@
 			var reqParams = {};
 			reqParams["week"] = selectedWeek;
 			reqParams["weekType"] = selectedWeekType;
-			reqParams["year"] = selectedYear;
+			reqParams["year"] = selectedYear;*/
 
-			this.set("_weekParams", reqParams);
+			this.set("_gamesAjaxParams", selectedWeekObj);
 			this.$.gamesAjax.generateRequest();
 		},
 
 		_isEmpty: function(arr) {
 			return !arr || arr.length == 0;
+		},
+
+		_isLoading: function(gamesAjaxLoading) {
+			return gamesAjaxLoading;
 		},
 
 		_liveGamesEmpty: function(games) {

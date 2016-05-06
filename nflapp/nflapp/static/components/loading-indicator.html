@@ -1,0 +1,76 @@
+<link rel="import" href="../vendor/paper-spinner/paper-spinner.html">
+
+<!--
+`loading-indicator` dims the screen and displays a paper-spinner at the
+center whenever `show` is true.
+
+`@apply(--layout-fit)` is used to expand to the containing element.
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--loading-indicator-clear-background` | The background color when `hide-background` is not set | `rgba(0, 0, 0, .65)`
+`--loading-indicator-opaque-background` | The background color when `hide-background` is set | `white`
+-->
+
+<dom-module id="loading-indicator">
+
+	<style>
+
+		.container > div {
+			@apply(--layout-fit);
+			@apply(--layout-vertical);
+			@apply(--layout-center-center);
+			z-index: 7;
+		}
+
+		.clear-background {
+			background-color: var(--loading-indicator-clear-background, rgba(0, 0, 0, .65));
+		}
+
+		.opaque-background {
+			background-color: var(--loading-indicator-opaque-background, white);
+		}
+
+		paper-spinner {
+			z-index: 8;
+		}
+		
+	</style>
+
+	<template>
+
+		<div class="container" hidden$="{{!show}}">
+			
+			<div class="clear-background" hidden$="{{hideBackground}}">
+				<paper-spinner active></paper-spinner>
+				<!-- <img src="ibm-loading.gif"></img> -->
+			</div>
+
+			<div class="opaque-background" hidden$="{{!hideBackground}}">
+				<paper-spinner active></paper-spinner>
+				<!-- <img src="ibm-loading.gif"></img> -->
+			</div>
+			
+		</div>
+
+	</template>
+
+</dom-module>
+
+<script>
+	Polymer({
+
+		is: "loading-indicator",
+
+		properties: {
+			show: Boolean,
+			hideBackground: {
+				type: Boolean,
+				value: false
+			}
+		}
+
+	});
+</script>
