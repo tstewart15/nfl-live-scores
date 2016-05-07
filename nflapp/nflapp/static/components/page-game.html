@@ -1,3 +1,6 @@
+<link rel="import" href="../vendor/neon-animation/neon-animatable-behavior.html">
+<!-- <link rel="import" href="../vendor/neon-animation/neon-shared-element-animatable-behavior.html"> -->
+
 <dom-module id="page-game">
 	
 	<style>
@@ -18,7 +21,26 @@
 				loading="{{_gamesAjaxLoading}}"
 				last-response="{{_games}}"></iron-ajax> -->
 
-		<div>TESTING 123</div>
+		<game-viewlet id="gameViewlet"
+				game-type="completed"
+				gsis-id="{{game.gsisId}}"
+				away-team="{{game.awayTeam}}"
+				away-score="{{game.awayScore}}"
+				home-team="{{game.homeTeam}}"
+				home-score="{{game.homeScore}}"
+				day-of-week="{{game.dayOfWeek}}"
+				start-year="{{game.startYear}}"
+				start-month-name="{{game.startMonthName}}"
+				start-date="{{game.startDate}}"
+				start-hour="{{game.startHour}}"
+				start-minute="{{game.startMinute}}"
+				start-am-pm="{{game.startAmPm}}"
+				time-zone="{{game.timeZone}}"
+				is-playing="{{game.isPlaying}}"
+				finished="{{game.finished}}"
+				on-tap="_handleBackTap"></game-viewlet>
+
+		<div ></div>
 
 	</template>
 
@@ -28,10 +50,40 @@
 
 	Polymer({
 		is: "page-game",
+		behaviors: [
+			Polymer.NeonAnimatableBehavior,
+			/*Polymer.NeonSharedElementAnimatableBehavior*/
+		],
 
 		properties: {
-
+			animationConfig: {
+				type: Object,
+				value: function() {
+					return {
+						'entry': {
+							name: 'fade-in-animation',
+							node: this
+						},
+						'exit': {
+							name: 'fade-out-animation',
+							node: this,
+							timing: {duration: 0}
+						}
+					}
+				}
+			},
+			game: Object,
+			/*sharedElements: {
+				type: Object,
+				value: function() {
+					return { "ripple": this.$.gameViewlet };
+				}
+			}*/
 		},
+
+		_handleBackTap: function() {
+			this.fire("back-tap");
+		}
 	});
 
 </script>

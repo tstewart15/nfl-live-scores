@@ -1,6 +1,6 @@
 Story board
 -----------
-- Page navigation (add game page) + neon animation?
+- Game page basic layout
 - ASYNC UPDATING!!!
 - Page URL routing (see pushState history API)
 - Style live game viewlets

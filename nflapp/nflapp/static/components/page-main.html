@@ -1,4 +1,6 @@
 <link rel="import" href="../vendor/iron-ajax/iron-ajax.html">
+<link rel="import" href="../vendor/neon-animation/neon-animatable-behavior.html">
+<!-- <link rel="import" href="../vendor/neon-animation/neon-shared-element-animatable-behavior.html"> -->
 
 <link rel="import" href="game-viewlet.html">
 <link rel="import" href="loading-indicator.html">
@@ -31,10 +33,18 @@
 			text-transform: uppercase;
 		}
 
+		.content {
+			@apply(--layout-flex);
+			@apply(--layout-vertical);
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+
 		.header {
 			@apply(--layout-horizontal);
 			@apply(--layout-center);
 			flex-shrink: 0;
+			background-color: lightgray;
 		}
 
 		.live-games-container {
@@ -71,89 +81,91 @@
 				loading="{{_gamesAjaxLoading}}"
 				last-response="{{_games}}"></iron-ajax>
 
-		<loading-indicator show="[[_isLoading(_gamesAjaxLoading)]]" hide-background></loading-indicator>
+		<!-- <loading-indicator show="[[_isLoading(_gamesAjaxLoading)]]" hide-background></loading-indicator> -->
 
 		<div class="header">
 			<week-selector selected-week-object="{{_selectedWeekObject}}" class="week-selector"></week-selector>
 		</div>
 		
-		<section>
-			<div class="container-label" hidden$="{{_liveGamesEmpty(_games)}}">Live</div>
-			<div class="live-games-container">
-				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
-				<template is="dom-repeat" items="{{_games}}" filter="_filterLiveGames" observe="finished isPlaying">
-					<game-viewlet
-							game-type="live"
-							gsis-id="{{item.gsisId}}"
-							away-team="{{item.awayTeam}}"
-							away-score="{{item.awayScore}}"
-							home-team="{{item.homeTeam}}"
-							home-score="{{item.homeScore}}"
-							day-of-week="{{item.dayOfWeek}}"
-							start-year="{{item.startYear}}"
-							start-month-name="{{item.startMonthName}}"
-							start-date="{{item.startDate}}"
-							start-hour="{{item.startHour}}"
-							start-minute="{{item.startMinute}}"
-							start-am-pm="{{item.startAmPm}}"
-							time-zone="{{item.timeZone}}"
-							is-playing="{{item.isPlaying}}"
-							finished="{{item.finished}}"></game-viewlet>
-				</template>
-			</div>
-		</section>
+		<div class="content">
+			<section>
+				<div class="container-label" hidden$="{{_liveGamesEmpty(_games)}}">Live</div>
+				<div class="live-games-container">
+					<template is="dom-repeat" items="{{_games}}" filter="_filterLiveGames" observe="finished isPlaying">
+						<game-viewlet
+								game-type="live"
+								gsis-id="{{item.gsisId}}"
+								away-team="{{item.awayTeam}}"
+								away-score="{{item.awayScore}}"
+								home-team="{{item.homeTeam}}"
+								home-score="{{item.homeScore}}"
+								day-of-week="{{item.dayOfWeek}}"
+								start-year="{{item.startYear}}"
+								start-month-name="{{item.startMonthName}}"
+								start-date="{{item.startDate}}"
+								start-hour="{{item.startHour}}"
+								start-minute="{{item.startMinute}}"
+								start-am-pm="{{item.startAmPm}}"
+								time-zone="{{item.timeZone}}"
+								is-playing="{{item.isPlaying}}"
+								finished="{{item.finished}}"
+								on-tap="_handleGameViewletTap"></game-viewlet>
+					</template>
+				</div>
+			</section>
 
-		<section>
-			<div class="container-label" hidden$="{{_scheduledGamesEmpty(_games)}}">Scheduled</div>
-			<div class="scheduled-games-container">
-				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
-				<template is="dom-repeat" items="{{_games}}" filter="_filterScheduledGames" observe="finished isPlaying">
-					<game-viewlet
-							game-type="scheduled"
-							gsis-id="{{item.gsisId}}"
-							away-team="{{item.awayTeam}}"
-							away-score="{{item.awayScore}}"
-							home-team="{{item.homeTeam}}"
-							home-score="{{item.homeScore}}"
-							day-of-week="{{item.dayOfWeek}}"
-							start-year="{{item.startYear}}"
-							start-month-name="{{item.startMonthName}}"
-							start-date="{{item.startDate}}"
-							start-hour="{{item.startHour}}"
-							start-minute="{{item.startMinute}}"
-							start-am-pm="{{item.startAmPm}}"
-							time-zone="{{item.timeZone}}"
-							is-playing="{{item.isPlaying}}"
-							finished="{{item.finished}}"></game-viewlet>
-				</template>
-			</div>
-		</section>
+			<section>
+				<div class="container-label" hidden$="{{_scheduledGamesEmpty(_games)}}">Scheduled</div>
+				<div class="scheduled-games-container">
+					<template is="dom-repeat" items="{{_games}}" filter="_filterScheduledGames" observe="finished isPlaying">
+						<game-viewlet
+								game-type="scheduled"
+								gsis-id="{{item.gsisId}}"
+								away-team="{{item.awayTeam}}"
+								away-score="{{item.awayScore}}"
+								home-team="{{item.homeTeam}}"
+								home-score="{{item.homeScore}}"
+								day-of-week="{{item.dayOfWeek}}"
+								start-year="{{item.startYear}}"
+								start-month-name="{{item.startMonthName}}"
+								start-date="{{item.startDate}}"
+								start-hour="{{item.startHour}}"
+								start-minute="{{item.startMinute}}"
+								start-am-pm="{{item.startAmPm}}"
+								time-zone="{{item.timeZone}}"
+								is-playing="{{item.isPlaying}}"
+								finished="{{item.finished}}"
+								on-tap="_handleGameViewletTap"></game-viewlet>
+					</template>
+				</div>
+			</section>
 
-		<section>
-			<div class="container-label" hidden$="{{_completedGamesEmpty(_games)}}">Completed</div>
-			<div class="completed-games-container">
-				<!-- <paper-spinner active="{{_gamesAjaxLoading}}"></paper-spinner> -->
-				<template is="dom-repeat" items="{{_games}}" filter="_filterCompletedGames" observe="finished">
-					<game-viewlet
-							game-type="completed"
-							gsis-id="{{item.gsisId}}"
-							away-team="{{item.awayTeam}}"
-							away-score="{{item.awayScore}}"
-							home-team="{{item.homeTeam}}"
-							home-score="{{item.homeScore}}"
-							day-of-week="{{item.dayOfWeek}}"
-							start-year="{{item.startYear}}"
-							start-month-name="{{item.startMonthName}}"
-							start-date="{{item.startDate}}"
-							start-hour="{{item.startHour}}"
-							start-minute="{{item.startMinute}}"
-							start-am-pm="{{item.startAmPm}}"
-							time-zone="{{item.timeZone}}"
-							is-playing="{{item.isPlaying}}"
-							finished="{{item.finished}}"></game-viewlet>
-				</template>
-			</div>
-		</section>
+			<section>
+				<div class="container-label" hidden$="{{_completedGamesEmpty(_games)}}">Completed</div>
+				<div class="completed-games-container">
+					<template is="dom-repeat" items="{{_games}}" filter="_filterCompletedGames" observe="finished">
+						<game-viewlet
+								game-type="completed"
+								gsis-id="{{item.gsisId}}"
+								away-team="{{item.awayTeam}}"
+								away-score="{{item.awayScore}}"
+								home-team="{{item.homeTeam}}"
+								home-score="{{item.homeScore}}"
+								day-of-week="{{item.dayOfWeek}}"
+								start-year="{{item.startYear}}"
+								start-month-name="{{item.startMonthName}}"
+								start-date="{{item.startDate}}"
+								start-hour="{{item.startHour}}"
+								start-minute="{{item.startMinute}}"
+								start-am-pm="{{item.startAmPm}}"
+								time-zone="{{item.timeZone}}"
+								is-playing="{{item.isPlaying}}"
+								finished="{{item.finished}}"
+								on-tap="_handleGameViewletTap"></game-viewlet>
+					</template>
+				</div>
+			</section>
+		</div>
 
 	</template>
 
@@ -163,6 +175,40 @@
 
 	Polymer({
 		is: "page-main",
+		behaviors: [
+			Polymer.NeonAnimatableBehavior,
+			/*Polymer.NeonSharedElementAnimatableBehavior*/
+		],
+
+		properties: {
+			animationConfig: {
+				type: Object,
+				value: function() {
+					return {
+						'entry': {
+							name: 'fade-in-animation',
+							node: this
+						},
+						'exit': {
+							name: 'fade-out-animation',
+							node: this,
+							timing: {duration: 0}
+						}
+					}
+				}
+			},
+			selectedGame: {
+				type: Object,
+				notify: true,
+				readOnly: true
+			},
+			/*sharedElements: {
+				type: Object,
+				value: function() {
+					return {};
+				}
+			}*/
+		},
 
 		observers: [ "_handleSelectedWeekObjectChange(_selectedWeekObject)" ],
 
@@ -181,6 +227,13 @@
 
 		_filterScheduledGames: function(item) {
 			return !item.isPlaying && !item.finished;
+		},
+
+		_handleGameViewletTap: function(e) {
+			var gameViewlet = e.currentTarget;
+			this._setSelectedGame(gameViewlet._templateInstance.item);
+			/*this.sharedElements = { "ripple": gameViewlet };*/
+			this.fire("game-viewlet-tap");
 		},
 
 		_handleSelectedWeekObjectChange: function(selectedWeekObj) {
