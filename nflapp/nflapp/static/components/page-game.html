@@ -1,46 +1,93 @@
+<link rel="import" href="../vendor/iron-list/iron-list.html">
+<link rel="import" href="../vendor/iron-icons/iron-icons.html">
 <link rel="import" href="../vendor/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="../vendor/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../vendor/web-socket/web-socket.html">
 <!-- <link rel="import" href="../vendor/neon-animation/neon-shared-element-animatable-behavior.html"> -->
 
 <dom-module id="page-game">
 	
 	<style>
-
 		:host {
 			@apply(--layout-vertical);
 		}
 
+		#gameViewlet {
+			flex-shrink: 0;
+		}
+
+		.back-button {
+			height: 64px;
+			width: 64px;
+		}
+
+		.content {
+			@apply(--layout-flex);
+			@apply(--layout-vertical);
+			@apply(--layout-relative);
+			@apply(--layout-scroll);
+		}
+
+		.header {
+			@apply(--layout-horizontal);
+			@apply(--layout-center-center);
+		}
+
+		.play-list {
+			@apply(--layout-flex);
+		}
 	</style>
 
 	<template>
 
-		<!-- <iron-ajax
-				id="gamesAjax"
-				url="/games/"
-				params="{{_weekParams}}"
+		<iron-ajax
+				id="playsAjax"
+				url="/plays/"
+				params="{{_playsAjaxParams}}"
 				handle-as="json"
-				loading="{{_gamesAjaxLoading}}"
-				last-response="{{_games}}"></iron-ajax> -->
+				loading="{{_playsAjaxLoading}}"
+				last-response="{{_plays}}">
+		</iron-ajax>
 
-		<game-viewlet id="gameViewlet"
-				game-type="completed"
-				gsis-id="{{game.gsisId}}"
-				away-team="{{game.awayTeam}}"
-				away-score="{{game.awayScore}}"
-				home-team="{{game.homeTeam}}"
-				home-score="{{game.homeScore}}"
-				day-of-week="{{game.dayOfWeek}}"
-				start-year="{{game.startYear}}"
-				start-month-name="{{game.startMonthName}}"
-				start-date="{{game.startDate}}"
-				start-hour="{{game.startHour}}"
-				start-minute="{{game.startMinute}}"
-				start-am-pm="{{game.startAmPm}}"
-				time-zone="{{game.timeZone}}"
-				is-playing="{{game.isPlaying}}"
-				finished="{{game.finished}}"
-				on-tap="_handleBackTap"></game-viewlet>
+		<web-socket json
+				url="/websocket/plays"
+				on-open="_onPlaysWebsocketOpen"
+				on-close="_onPlaysWebsocketClose"
+				on-message="_onPlaysWebsocketMessage"
+				on-error="_onPlaysWebsocketError">
+		</web-socket>
 
-		<div ></div>
+		<div class="header">
+			<paper-icon-button icon="arrow-back" class="back-button" on-tap="_onBackTap"></paper-icon-button>
+			<game-viewlet id="gameViewlet"
+					game-type="completed"
+					gsis-id="{{game.gsisId}}"
+					away-team="{{game.awayTeam}}"
+					away-score="{{game.awayScore}}"
+					home-team="{{game.homeTeam}}"
+					home-score="{{game.homeScore}}"
+					day-of-week="{{game.dayOfWeek}}"
+					start-year="{{game.startYear}}"
+					start-month-name="{{game.startMonthName}}"
+					start-date="{{game.startDate}}"
+					start-hour="{{game.startHour}}"
+					start-minute="{{game.startMinute}}"
+					start-am-pm="{{game.startAmPm}}"
+					time-zone="{{game.timeZone}}"
+					is-playing="{{game.isPlaying}}"
+					finished="{{game.finished}}"></game-viewlet>
+		</div>
+
+		<div class="content">
+			<loading-indicator show="[[_playsAjaxLoading]]" hide-background></loading-indicator>
+			<iron-list items="{{_plays}}" class="play-list">
+				<template>
+					<div class="play-item">
+						<span>{{item.description}}</span>
+					</div>
+				</template>
+			</iron-list>
+		</div>
 
 	</template>
 
@@ -72,7 +119,10 @@
 					}
 				}
 			},
-			game: Object,
+			game: {
+				type: Object,
+				observer: "_onGameChange"
+			}
 			/*sharedElements: {
 				type: Object,
 				value: function() {
@@ -81,9 +131,32 @@
 			}*/
 		},
 
-		_handleBackTap: function() {
+		_onBackTap: function() {
 			this.fire("back-tap");
-		}
+		},
+
+		_onGameChange: function(game) {
+			if (game && game.gsisId) {
+				this.set("_playsAjaxParams", {"gsisId": game.gsisId});
+				this.$.playsAjax.generateRequest();
+			}
+		},
+
+		_onPlaysWebsocketClose: function() {
+			console.log("plays websocket closed");
+		},
+
+		_onPlaysWebsocketError: function() {
+			console.log("plays websocket error");
+		},
+
+		_onPlaysWebsocketMessage: function(e) {
+			console.log("plays websocket message");
+		},
+
+		_onPlaysWebsocketOpen: function() {
+			console.log("plays websocket opened");
+		},
 	});
 
 </script>

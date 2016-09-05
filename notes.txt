@@ -1,7 +1,7 @@
 Story board
 -----------
-- Game page basic layout
 - ASYNC UPDATING!!!
+	- WS4REDIS_EXPIRE?
 - Page URL routing (see pushState history API)
 - Style live game viewlets
 - Include week params in URL? Or have it default to current week.

@@ -44,7 +44,7 @@
 			@apply(--layout-horizontal);
 			@apply(--layout-center);
 			flex-shrink: 0;
-			background-color: lightgray;
+			/*background-color: lightgray;*/
 		}
 
 		.live-games-container {
@@ -93,6 +93,7 @@
 				<div class="live-games-container">
 					<template is="dom-repeat" items="{{_games}}" filter="_filterLiveGames" observe="finished isPlaying">
 						<game-viewlet
+								clickable
 								game-type="live"
 								gsis-id="{{item.gsisId}}"
 								away-team="{{item.awayTeam}}"
@@ -119,6 +120,7 @@
 				<div class="scheduled-games-container">
 					<template is="dom-repeat" items="{{_games}}" filter="_filterScheduledGames" observe="finished isPlaying">
 						<game-viewlet
+								clickable
 								game-type="scheduled"
 								gsis-id="{{item.gsisId}}"
 								away-team="{{item.awayTeam}}"
@@ -145,6 +147,7 @@
 				<div class="completed-games-container">
 					<template is="dom-repeat" items="{{_games}}" filter="_filterCompletedGames" observe="finished">
 						<game-viewlet
+								clickable
 								game-type="completed"
 								gsis-id="{{item.gsisId}}"
 								away-team="{{item.awayTeam}}"

@@ -6,15 +6,15 @@
 			@apply(--layout-vertical);
 			border-radius: 4px;
 			color: black;
-			cursor: pointer;
 			margin: 5px;
 			padding: 15px 20px;
 			text-align: center;
 			text-decoration: none;
 		}
 		
-		:host:hover {
+		:host[clickable]:hover {
 			background-color: lightgray;
+			cursor: pointer;
 		}
 
 		.at-symbol-completed {
@@ -121,6 +121,11 @@
 		is: "game-viewlet",
 
 		properties: {
+			clickable: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
 			gameType: {
 				type: String,
 				value: "" // possible values: "live", "scheduled", "completed"
