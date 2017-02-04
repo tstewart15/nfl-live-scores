@@ -13,7 +13,7 @@
   "license": "MIT",
   "homepage": "https://github.com/hph/web-socket/",
   "dependencies": {
-    "polymer": "~1.6.1"
+    "polymer": "Polymer/polymer#^1.6.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -22,11 +22,11 @@
     "paper-card": "PolymerElements/paper-card#~1.0.8",
     "web-component-tester": "~3.4.2"
   },
-  "_release": "594c46fe38",
+  "_release": "62a5cbfbff",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "594c46fe383a4874d933dbb34ba6fa31fb55d717"
+    "commit": "62a5cbfbff257bc0125fb0de367aedc912dbc50d"
   },
   "_source": "https://github.com/hph/web-socket.git",
   "_target": "*",

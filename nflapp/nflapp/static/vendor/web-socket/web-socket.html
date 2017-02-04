@@ -69,6 +69,14 @@ declarative element definition is:
       },
 
       /**
+       * Disable exponential backoff during reconnection attempts.
+       */
+      noDecay: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * Initial delay before attempting to reopen the connection in the event
        * that it was not closed cleanly. The interval will decay exponentially.
        */
@@ -151,8 +159,12 @@ declarative element definition is:
      */
     _onClose: function (event) {
       if (!event.wasClean) {
-        this._reopenAttempt = this.async(this.open, this._reopenInterval);
-        this._reopenInterval *= 2;
+        if (this.noDecay) {
+          this.async(this.open);
+        } else {
+          this._reopenAttempt = this.async(this.open, this._reopenInterval);
+          this._reopenInterval *= 2;
+        }
       }
 
       this.fire('close');
