@@ -40,17 +40,19 @@
 
 	<template>
 
-		<iron-ajax
+		<!-- <iron-ajax
 				id="playsAjax"
 				url="/plays/"
 				params="{{_playsAjaxParams}}"
 				handle-as="json"
 				loading="{{_playsAjaxLoading}}"
 				last-response="{{_plays}}">
-		</iron-ajax>
+		</iron-ajax> -->
 
-		<web-socket json
-				url="/websocket/plays"
+		<web-socket id="playsWebsocket"
+				json
+				url="[[_computePlaysWebsocketUrl(game.gsisId)]]"
+				on-url-changed="_onPlaysWebsocketUrlChange"
 				on-open="_onPlaysWebsocketOpen"
 				on-close="_onPlaysWebsocketClose"
 				on-message="_onPlaysWebsocketMessage"
@@ -79,7 +81,7 @@
 		</div>
 
 		<div class="content">
-			<loading-indicator show="[[_playsAjaxLoading]]" hide-background></loading-indicator>
+			<!-- <loading-indicator show="[[_playsAjaxLoading]]" hide-background></loading-indicator> -->
 			<iron-list items="{{_plays}}" class="play-list">
 				<template>
 					<div class="play-item">
@@ -121,7 +123,7 @@
 			},
 			game: {
 				type: Object,
-				observer: "_onGameChange"
+				/*observer: "_onGameChange"*/
 			}
 			/*sharedElements: {
 				type: Object,
@@ -131,16 +133,21 @@
 			}*/
 		},
 
+		_computePlaysWebsocketUrl: function(gsisId) {
+			if (gsisId && gsisId != "") return "/websocket/plays/" + gsisId;
+			return null;
+		},
+
 		_onBackTap: function() {
 			this.fire("back-tap");
 		},
 
-		_onGameChange: function(game) {
+		/*_onGameChange: function(game) {
 			if (game && game.gsisId) {
 				this.set("_playsAjaxParams", {"gsisId": game.gsisId});
 				this.$.playsAjax.generateRequest();
 			}
-		},
+		},*/
 
 		_onPlaysWebsocketClose: function() {
 			console.log("plays websocket closed");
@@ -157,6 +164,11 @@
 		_onPlaysWebsocketOpen: function() {
 			console.log("plays websocket opened");
 		},
+
+		_onPlaysWebsocketUrlChange: function(e) {
+			// if there's a new url, open the websocket
+			if (e.detail.currentUrl != e.detail.previousUrl) this.$.playsWebsocket.open();
+		}
 	});
 
 </script>

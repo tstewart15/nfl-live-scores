@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'mainapp',
+    'ws4redis',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,7 +62,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'nflapp/static')]
 
 ROOT_URLCONF = 'nflapp.urls'
 
-WSGI_APPLICATION = 'nflapp.wsgi.application'
+# WSGI_APPLICATION = 'nflapp.wsgi.application'
+WSGI_APPLICATION = 'ws4redis.django_runserver.application'
 
 
 # Database
@@ -94,5 +96,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
+
+WEBSOCKET_URL = '/websocket/'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.template.context_processors.debug",
+    "django.template.context_processors.i18n",
+    "django.template.context_processors.media",
+    "django.template.context_processors.static",
+    "django.template.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "ws4redis.context_processors.default",
+)
+
+SESSION_ENGINE = 'redis_sessions.session'

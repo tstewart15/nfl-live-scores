@@ -83,7 +83,7 @@ def index(request):
     #               })
 
 
-def games(request):
+def games_for_week(request):
     """
     Return the Game objects as JSON for the given NFL week.
     Expected request parameters:
@@ -96,7 +96,6 @@ def games(request):
     year = request.GET.get("year")
     week_type = request.GET.get("weekType")
     week_num = request.GET.get("week")
-    print "Received request for " + year + " " + week_type + " " + week_num
 
     db = nfldb.connect()
     q = nfldb.Query(db)
@@ -134,3 +133,37 @@ def games(request):
         gamesJSON.append(game)
 
     return JsonResponse(gamesJSON, safe=False)
+
+
+def plays_for_game(request):
+    """
+    Return the Play objects as JSON for the given game's gsis_id.
+    Expected request parameters:
+        `gsisId` - The gsis_id of the game
+    """
+    gsis_id = request.GET.get("gsisId")
+
+    db = nfldb.connect()
+    q = nfldb.Query(db)
+    q.game(gsis_id=gsis_id)
+    q.sort(('time', 'desc'))
+
+    plays = q.as_plays()
+    playsJSON = []
+    for p in plays:
+        # print "Play time: ", p.time
+        play = {"description": p.description,
+                "down": p.down,
+                "offensiveTeam": p.pos_team,
+                "points": p.points,
+                "scoringTeam": p.scoring_team,
+                "time": str(p.time),
+                "yardline": str(p.yardline),
+                "yardsToGo": p.yards_to_go}
+        playsJSON.append(play)
+
+    return JsonResponse(playsJSON, safe=False)
+
+
+def plays_for_game_ws(request):
+    return
